@@ -11,6 +11,7 @@ config_version=4
 [application]
 
 config/name="Yam-godot-games"
+run/main_scene="res://aleph_bet.tscn"
 config/icon="res://icon.png"
 
 [display]
@@ -18,6 +19,15 @@ config/icon="res://icon.png"
 window/size/width=960
 window/size/height=540
 window/size/resizable=false
+
+[editor]
+
+version_control_autoload_on_startup=true
+version_control_plugin_name="GitAPI"
+
+[gdnative]
+
+singletons=[  ]
 
 [input]
 
