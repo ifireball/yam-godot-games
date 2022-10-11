@@ -28,11 +28,11 @@ func _reset_idle_timer():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	_reset_idle_timer()
 	idle_animations = []
 	for anim_name in $AnimationPlayer.get_animation_list():
 		if anim_name.begins_with("idle"):
 			idle_animations.append(anim_name)
+	_reset_idle_timer()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -53,7 +53,16 @@ func _on_Letter_gui_input(event: InputEvent):
 		return
 	if event.pressed:
 		return
-	print("%s clicked" % self.name)		
-	if $IdleAnimationPlayer.is_playing():
-		return
-	$IdleAnimationPlayer.play("idle_spin_z")
+	print("%s clicked" % self.name)
+	_on_selected()
+
+
+func _on_selected():
+	print("%s selected" % self.name)
+	$IdleTimer.stop()
+	$AnimationPlayer.queue("refuse")
+	while true:
+		yield($AnimationPlayer, "animation_finished")
+		if not $AnimationPlayer.get_queue():
+			break
+	_reset_idle_timer()

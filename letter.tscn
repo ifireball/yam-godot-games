@@ -1,10 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://fonts/DavidLibre-Bold.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://letter.gd" type="Script" id=2]
 
 [sub_resource type="DynamicFont" id=1]
-size = 60
+size = 120
 outline_size = 1
 font_data = ExtResource( 1 )
 
@@ -33,6 +33,22 @@ tracks/1/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "idle_spin_x"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = false
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1, 0 ), Vector2( 1, -1 ), Vector2( 1, 0 ), Vector2( 1, 1 ) ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -66,10 +82,27 @@ tracks/0/keys = {
 "values": [ 0.0, 180.0, 360.0 ]
 }
 
+[sub_resource type="Animation" id=6]
+resource_name = "refuse"
+length = 0.6
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.15, 0.25, 0.35, 0.45, 0.55, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( -20, 0 ), Vector2( 20, 0 ), Vector2( -20, 0 ), Vector2( 20, 0 ), Vector2( -20, 0 ), Vector2( 20, 0 ), Vector2( 0, 0 ) ]
+}
+
 [node name="Letter" type="Label"]
-margin_right = 60.0
-margin_bottom = 60.0
-rect_pivot_offset = Vector2( 30, 30 )
+margin_right = 120.0
+margin_bottom = 120.0
+rect_pivot_offset = Vector2( 60, 60 )
 mouse_filter = 0
 mouse_default_cursor_shape = 2
 custom_colors/font_color = Color( 0, 0, 0.545098, 1 )
@@ -78,13 +111,14 @@ custom_fonts/font = SubResource( 1 )
 text = "א"
 align = 1
 valign = 1
-percent_visible = -1.0
 script = ExtResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 2 )
+anims/idle_spin_x = SubResource( 5 )
 anims/idle_spin_y = SubResource( 4 )
 anims/idle_spin_z = SubResource( 3 )
+anims/refuse = SubResource( 6 )
 
 [node name="IdleTimer" type="Timer" parent="."]
 wait_time = 10.0

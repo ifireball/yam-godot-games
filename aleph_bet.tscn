@@ -10,38 +10,34 @@ background_mode = 1
 [node name="Letter Blue" parent="." instance=ExtResource( 1 )]
 margin_left = 122.0
 margin_top = 195.0
-margin_right = 182.0
-margin_bottom = 255.0
-percent_visible = 1.0
+margin_right = 242.0
+margin_bottom = 315.0
 
 [node name="Letter Yellow" parent="." instance=ExtResource( 1 )]
-margin_left = 346.0
+margin_left = 321.0
 margin_top = 196.0
-margin_right = 406.0
-margin_bottom = 256.0
+margin_right = 441.0
+margin_bottom = 316.0
 custom_colors/font_color = Color( 0.721569, 0.52549, 0.0431373, 1 )
 text = "ב"
-percent_visible = 1.0
 button_color = 1
 
 [node name="Letter Red" parent="." instance=ExtResource( 1 )]
-margin_left = 566.0
+margin_left = 524.0
 margin_top = 197.0
-margin_right = 626.0
-margin_bottom = 257.0
+margin_right = 644.0
+margin_bottom = 317.0
 custom_colors/font_color = Color( 0.545098, 0, 0, 1 )
 text = "ג"
-percent_visible = 1.0
 button_color = 2
 
 [node name="Letter Green" parent="." instance=ExtResource( 1 )]
-margin_left = 790.0
+margin_left = 731.0
 margin_top = 196.0
-margin_right = 850.0
-margin_bottom = 256.0
+margin_right = 851.0
+margin_bottom = 316.0
 custom_colors/font_color = Color( 0, 0.501961, 0, 1 )
 text = "ד"
-percent_visible = 1.0
 button_color = 3
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
