@@ -103,7 +103,12 @@ func fade_out():
 func reset():
 	$AnimationPlayer.clear_queue()
 	$AnimationPlayer.stop()
-	$AnimationPlayer.play("RESET")
+	$Glyph/CPUParticles2D.emitting = false
+	$Glyph.rect_position = Vector2(0, 0)
+	$Glyph.rect_scale = Vector2(1, 1)
+	$Glyph.rect_rotation = 0
+	modulate = Color.white
+	visible = true
 	
 	
 func listen_for_answers():

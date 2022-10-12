@@ -1,46 +1,70 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://letter.tscn" type="PackedScene" id=1]
 [ext_resource path="res://aleph_bet.gd" type="Script" id=2]
 
-[sub_resource type="Environment" id=1]
-background_mode = 1
+[sub_resource type="Curve" id=1]
+max_value = 2.0
+_data = [ Vector2( 0, 0.472329 ), 0.0, -0.037558, 0, 0, Vector2( 1, 1.48677 ), 0.0, 0.0, 0, 0 ]
 
-[node name="Root" type="Node"]
+[sub_resource type="Gradient" id=2]
+interpolation_mode = 2
+offsets = PoolRealArray( 0, 0.746154 )
+colors = PoolColorArray( 0.247607, 0.247607, 0.247607, 1, 1, 1, 1, 1 )
+
+[node name="Root" type="Node2D"]
 script = ExtResource( 2 )
 
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 960.0
+margin_bottom = 540.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+position = Vector2( 480, 270 )
+amount = 100
+lifetime = 7.0
+preprocess = 100.0
+spread = 180.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 1.0
+linear_accel = 25.0
+scale_amount = 2.0
+scale_amount_random = 1.0
+scale_amount_curve = SubResource( 1 )
+color_ramp = SubResource( 2 )
+
 [node name="Letter Blue" parent="." groups=["letters"] instance=ExtResource( 1 )]
-margin_left = 122.0
+margin_left = 132.0
 margin_top = 195.0
-margin_right = 242.0
+margin_right = 252.0
 margin_bottom = 315.0
 
 [node name="Letter Yellow" parent="." groups=["letters"] instance=ExtResource( 1 )]
-margin_left = 321.0
-margin_top = 196.0
-margin_right = 441.0
-margin_bottom = 316.0
+margin_left = 324.0
+margin_top = 195.0
+margin_right = 444.0
+margin_bottom = 315.0
 button_color = 1
 letter = "ב"
 
 [node name="Letter Red" parent="." groups=["letters"] instance=ExtResource( 1 )]
-margin_left = 524.0
-margin_top = 197.0
-margin_right = 644.0
-margin_bottom = 317.0
+margin_left = 516.0
+margin_top = 195.0
+margin_right = 636.0
+margin_bottom = 315.0
 button_color = 2
 letter = "ג"
 
 [node name="Letter Green" parent="." groups=["letters"] instance=ExtResource( 1 )]
-margin_left = 731.0
-margin_top = 196.0
-margin_right = 851.0
-margin_bottom = 316.0
+margin_left = 708.0
+margin_top = 195.0
+margin_right = 828.0
+margin_bottom = 315.0
 button_color = 3
 letter = "ד"
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( 1 )
+[node name="Tween" type="Tween" parent="."]
 
 [connection signal="right_answer_selected" from="Letter Blue" to="." method="_on_right_answer_selected"]
 [connection signal="right_answer_selected" from="Letter Yellow" to="." method="_on_right_answer_selected"]
