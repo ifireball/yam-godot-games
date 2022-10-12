@@ -93,3 +93,10 @@ func _on_right_answer_selected(letter: Letter):
 	letter.rect_position = letter_current_position
 	letter.rect_scale = letter_current_scale
 	_reset_level()
+
+
+func _unhandled_input(event):
+	if Input.is_action_just_released("exit"):
+		get_tree().notification(MainLoop.NOTIFICATION_WM_QUIT_REQUEST)
+	elif Input.is_action_just_released("fullscreen"):
+		OS.window_fullscreen = not OS.window_fullscreen

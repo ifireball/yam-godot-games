@@ -9,6 +9,12 @@ const button_colors := {
 	Button.RED: Color.darkred,
 	Button.GREEN: Color.webgreen,
 }
+const button_actions := {
+	Button.BLUE: "blue",
+	Button.YELLOW: "yellow",
+	Button.RED: "red",
+	Button.GREEN: "green",
+}
 
 const LETTERS := [
 	"א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט", "י", "כ", 
@@ -25,6 +31,7 @@ signal right_answer_selected(letter)
 signal right_answer_exit(letter)
 
 
+var responsive := false
 var idle_animations: PoolStringArray
 
 
@@ -72,6 +79,12 @@ func _on_Letter_gui_input(event: InputEvent):
 	_on_selected()
 
 
+func _unhandled_input(event):
+	if Input.is_action_just_released(button_actions[button_color]):
+		print("%s got action input" % self.name)
+		_on_selected()
+		
+
 static func _wait_anim_queue_end(player: AnimationPlayer):
 	while true:
 		yield(player, "animation_finished")
@@ -80,10 +93,13 @@ static func _wait_anim_queue_end(player: AnimationPlayer):
 
 
 func _on_selected():
+	if not responsive:
+		return
 	print("%s selected" % self.name)
 	$IdleTimer.stop()
 	$AnimationPlayer.clear_queue()
 	if is_right_answer:
+		responsive = false
 		emit_signal("right_answer_selected", self)
 		$AnimationPlayer.queue("win")
 		yield(_wait_anim_queue_end($AnimationPlayer), "completed")
@@ -95,6 +111,7 @@ func _on_selected():
 
 
 func fade_out():
+	responsive = false
 	$IdleTimer.stop()
 	$AnimationPlayer.clear_queue()
 	$AnimationPlayer.queue("fadeout")
@@ -112,6 +129,7 @@ func reset():
 	
 	
 func listen_for_answers():
+	responsive = true
 	if is_right_answer:
 		print("TODO: Play the question audio here")
 	_reset_idle_timer()
