@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://fonts/DavidLibre-Bold.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://letter.gd" type="Script" id=2]
@@ -7,6 +7,9 @@
 size = 120
 outline_size = 1
 font_data = ExtResource( 1 )
+
+[sub_resource type="Curve" id=8]
+_data = [ Vector2( 0, 0.2375 ), 0.0, 0.0, 0, 0, Vector2( 0.964664, 1 ), 0.0, 0.0, 0, 0 ]
 
 [sub_resource type="Animation" id=2]
 length = 0.001
@@ -69,6 +72,42 @@ tracks/4/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ true ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("CPUParticles2D:emitting")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("CPUParticles2D:scale_amount")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 5.0 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("CPUParticles2D:scale")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ) ]
 }
 
 [sub_resource type="Animation" id=7]
@@ -163,6 +202,59 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( -10, 0 ), Vector2( 10, 0 ), Vector2( -10, 0 ), Vector2( 10, 0 ), Vector2( -10, 0 ), Vector2( 10, 0 ), Vector2( 0, 0 ) ]
 }
 
+[sub_resource type="Animation" id=9]
+resource_name = "win"
+length = 4.0
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("CPUParticles2D:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rect_scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1, 4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 3, 3 ), Vector2( 3, 3 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("CPUParticles2D:scale_amount")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 5.0, 10.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:rect_rotation")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 2, 2.3, 2.6, 4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.0, 360.0, 720.0, 720.0 ]
+}
+
 [node name="Letter" type="Control"]
 margin_right = 120.0
 margin_bottom = 120.0
@@ -182,6 +274,24 @@ text = "א"
 align = 1
 valign = 1
 
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Glyph"]
+position = Vector2( 60, 59 )
+emitting = false
+amount = 64
+local_coords = false
+emission_shape = 4
+emission_points = PoolVector2Array( -30, -30, 30, -30, 30, 30, -30, 30 )
+emission_normals = PoolVector2Array( -1, -1, 1, -1, 1, 1, -1, 1 )
+emission_colors = PoolColorArray(  )
+spread = 20.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 60.0
+initial_velocity_random = 0.5
+scale_amount = 5.0
+scale_amount_random = 0.5
+scale_amount_curve = SubResource( 8 )
+color = Color( 0, 0, 0.55, 1 )
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Glyph")
 anims/RESET = SubResource( 2 )
@@ -190,6 +300,7 @@ anims/idle_spin_x = SubResource( 5 )
 anims/idle_spin_y = SubResource( 4 )
 anims/idle_spin_z = SubResource( 3 )
 anims/refuse = SubResource( 6 )
+anims/win = SubResource( 9 )
 
 [node name="IdleTimer" type="Timer" parent="."]
 wait_time = 10.0

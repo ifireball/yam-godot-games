@@ -31,6 +31,7 @@ var idle_animations: PoolStringArray
 func set_button_color(new_color: int):
 	button_color = new_color
 	$Glyph.add_color_override("font_color", button_colors[button_color])
+	$Glyph/CPUParticles2D.color = button_colors[button_color]
 
 
 func set_letter(new_letter: String):
@@ -84,7 +85,7 @@ func _on_selected():
 	$AnimationPlayer.clear_queue()
 	if is_right_answer:
 		emit_signal("right_answer_selected", self)
-		$AnimationPlayer.queue("idle_spin_z")
+		$AnimationPlayer.queue("win")
 		yield(_wait_anim_queue_end($AnimationPlayer), "completed")
 		emit_signal("right_answer_exit", self)
 	else:
