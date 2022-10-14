@@ -8,6 +8,66 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Reference",
+"class": "CellEditor",
+"language": "GDScript",
+"path": "res://addons/resources_speadsheet_view/typed_cells/cell_editor.gd"
+}, {
+"base": "Resource",
+"class": "LetterData",
+"language": "GDScript",
+"path": "res://letter_data.gd"
+}, {
+"base": "Resource",
+"class": "LetterSet",
+"language": "GDScript",
+"path": "res://letter_set.gd"
+}, {
+"base": "GridContainer",
+"class": "SettingsGrid",
+"language": "GDScript",
+"path": "res://addons/resources_speadsheet_view/settings_grid.gd"
+}, {
+"base": "Control",
+"class": "SheetsDockEditor",
+"language": "GDScript",
+"path": "res://addons/resources_speadsheet_view/typed_editors/dock_base.gd"
+}, {
+"base": "Reference",
+"class": "TextEditingUtils",
+"language": "GDScript",
+"path": "res://addons/resources_speadsheet_view/text_editing_utils.gd"
+}, {
+"base": "Button",
+"class": "ThemeIconButton",
+"language": "GDScript",
+"path": "res://addons/resources_speadsheet_view/editor_icon_button.gd"
+}, {
+"base": "Control",
+"class": "ThemeStylebox",
+"language": "GDScript",
+"path": "res://addons/resources_speadsheet_view/editor_stylebox_overrider.gd"
+} ]
+_global_script_class_icons={
+"CellEditor": "",
+"LetterData": "",
+"LetterSet": "",
+"SettingsGrid": "",
+"SheetsDockEditor": "",
+"TextEditingUtils": "",
+"ThemeIconButton": "",
+"ThemeStylebox": ""
+}
+
+[addons]
+
+resources_spreadsheet_view/color_rows=true
+resources_spreadsheet_view/color_arrays=true
+resources_spreadsheet_view/array_min_width=128.0
+resources_spreadsheet_view/clip_headers=true
+resources_spreadsheet_view/dupe_arrays=true
+
 [application]
 
 config/name="Yam-godot-games"
@@ -25,6 +85,10 @@ window/stretch/aspect="keep"
 
 version_control_autoload_on_startup=true
 version_control_plugin_name="GitAPI"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/resources_speadsheet_view/plugin.cfg" )
 
 [gdnative]
 

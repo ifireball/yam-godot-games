@@ -1,0 +1,84 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://letter-set-editor/letter-data-grid.tscn" type="PackedScene" id=1]
+[ext_resource path="res://letter-set-editor/letter-set-editor.gd" type="Script" id=2]
+
+[node name="WindowDialog" type="WindowDialog"]
+margin_right = 619.0
+margin_bottom = 375.0
+window_title = "Letter set editor"
+resizable = true
+script = ExtResource( 2 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="LetterDataGrid" parent="HSplitContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 0.0
+margin_top = 0.0
+margin_right = 299.0
+margin_bottom = 367.0
+rect_min_size = Vector2( 120, 120 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer"]
+margin_left = 311.0
+margin_right = 611.0
+margin_bottom = 367.0
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/HBoxContainer"]
+margin_right = 20.0
+margin_bottom = 367.0
+size_flags_vertical = 3
+alignment = 1
+
+[node name="AddToSetBtn" type="Button" parent="HSplitContainer/HBoxContainer/VBoxContainer"]
+margin_top = 161.0
+margin_right = 20.0
+margin_bottom = 181.0
+text = ">"
+
+[node name="RemoveFromSetBtn" type="Button" parent="HSplitContainer/HBoxContainer/VBoxContainer"]
+margin_top = 185.0
+margin_right = 20.0
+margin_bottom = 205.0
+text = "<"
+
+[node name="VSplitContainer" type="VSplitContainer" parent="HSplitContainer/HBoxContainer"]
+margin_left = 24.0
+margin_right = 300.0
+margin_bottom = 367.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ItemList" type="ItemList" parent="HSplitContainer/HBoxContainer/VSplitContainer"]
+margin_right = 276.0
+margin_bottom = 116.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="LetterDataGrid" parent="HSplitContainer/HBoxContainer/VSplitContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 0.0
+margin_top = 128.0
+margin_right = 276.0
+margin_bottom = 367.0
+rect_min_size = Vector2( 120, 120 )
+size_flags_stretch_ratio = 2.0

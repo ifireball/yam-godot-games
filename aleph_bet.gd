@@ -95,7 +95,7 @@ func _on_right_answer_selected(letter: Letter):
 	_reset_level()
 
 
-func _unhandled_input(event):
+func _unhandled_input(_event):
 	if Input.is_action_just_released("exit"):
 		get_tree().notification(MainLoop.NOTIFICATION_WM_QUIT_REQUEST)
 	elif Input.is_action_just_released("fullscreen"):

@@ -79,7 +79,7 @@ func _on_Letter_gui_input(event: InputEvent):
 	_on_selected()
 
 
-func _unhandled_input(event):
+func _unhandled_input(_event):
 	if Input.is_action_just_released(button_actions[button_color]):
 		print("%s got action input" % self.name)
 		_on_selected()
