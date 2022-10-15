@@ -1,7 +1,39 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://fonts/big-david.tres" type="DynamicFont" id=1]
 [ext_resource path="res://letter-set-editor/letter-data-item.gd" type="Script" id=2]
+
+[sub_resource type="Animation" id=2]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "blink"
+length = 1.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 1 )
@@ -31,6 +63,54 @@ custom_fonts/font = ExtResource( 1 )
 text = "א"
 align = 1
 valign = 1
+
+[node name="EditButtonsVBox" type="VBoxContainer" parent="VBox/Glyph"]
+visible = false
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -12.0
+margin_bottom = 44.0
+grow_horizontal = 0
+
+[node name="GlyphEditButton" type="Button" parent="VBox/Glyph/EditButtonsVBox"]
+margin_right = 20.0
+margin_bottom = 20.0
+hint_tooltip = "Change glyph"
+text = "E"
+__meta__ = {
+"_editor_description_": "Change glyph"
+}
+
+[node name="GlyphSaveButton" type="Button" parent="VBox/Glyph/EditButtonsVBox"]
+visible = false
+margin_top = 24.0
+margin_right = 20.0
+margin_bottom = 44.0
+hint_tooltip = "Save glyph"
+text = "S"
+
+[node name="DeleteButton" type="Button" parent="VBox/Glyph/EditButtonsVBox"]
+margin_top = 24.0
+margin_right = 20.0
+margin_bottom = 44.0
+hint_tooltip = "Delete letter"
+text = "X"
+
+[node name="GlyphCursor" type="ColorRect" parent="VBox/Glyph"]
+visible = false
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 26.0
+margin_right = -26.0
+margin_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 0
+rect_min_size = Vector2( 0, 8 )
+
+[node name="GlyphAnimationPlayer" type="AnimationPlayer" parent="VBox/Glyph/GlyphCursor"]
+anims/RESET = SubResource( 2 )
+anims/blink = SubResource( 3 )
 
 [node name="NameTabber" type="TabContainer" parent="VBox"]
 margin_top = 124.0
@@ -105,7 +185,10 @@ hint_tooltip = "Save"
 text = "S"
 
 [connection signal="focus_entered" from="." to="." method="_on_LetterDataItem_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_LetterDataItem_focus_exited"]
 [connection signal="gui_input" from="." to="." method="_on_LetterDataItem_gui_input"]
+[connection signal="pressed" from="VBox/Glyph/EditButtonsVBox/GlyphEditButton" to="." method="_on_GlyphEditButton_pressed"]
+[connection signal="pressed" from="VBox/Glyph/EditButtonsVBox/GlyphSaveButton" to="." method="_on_GlyphSaveButton_pressed"]
 [connection signal="pressed" from="VBox/NameTabber/FocusedNameHBox/NameEditButton" to="." method="_on_NameEditButton_pressed"]
 [connection signal="focus_exited" from="VBox/NameTabber/EditNameHBox/NameEditor" to="." method="_on_NameEditor_focus_exited"]
 [connection signal="text_entered" from="VBox/NameTabber/EditNameHBox/NameEditor" to="." method="_on_NameEditor_text_entered"]
