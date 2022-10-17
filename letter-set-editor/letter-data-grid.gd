@@ -16,8 +16,22 @@ func _enter_tree():
 	bg_stylebox = get_stylebox("bg", "Tree")
 	add_stylebox_override("bg", bg_stylebox)
 	
+	
 func _ready():
-	print(theme)
+	if Engine.editor_hint:
+		return
+	_clear()
+	var index := 0
+	for letter in LetterData.load_all():
+		add_item(index, letter)
+		index += 1
+	
+	
+func _clear():
+	for item in grid.get_children():
+		if item is LetterDataItem:
+			del_item(item)
+	
 
 func _notification(what):
 	match what:
@@ -37,14 +51,35 @@ func _fit_grid_columns():
 
 
 func _on_AddButton_pressed():
+	add_item(add_button.get_index())
+
+
+func add_item(index: int, letter_data: LetterData = null):
 	var new_item: LetterDataItem = LetterDataItemScn.instance()
+	if letter_data:
+		new_item.letter_data = letter_data
+	else:
+		# warning-ignore:return_value_discarded
+		new_item.letter_data.save()
 	grid.add_child(new_item)
-	grid.move_child(new_item, add_button.get_index())
+	grid.move_child(new_item, index)
+	# warning-ignore:return_value_discarded
 	new_item.connect("selected", self, "_on_LetterDataItem_selected")
+	# warning-ignore:return_value_discarded
+	new_item.letter_data.connect("deleted", self, "del_item", [new_item])
 	yield(get_tree(), "idle_frame")
 	_fit_grid_columns()
 	yield(get_tree(), "idle_frame")
 	new_item.grab_focus()
+
+
+func del_item(item: LetterDataItem):
+	print("Deleting item %s" % item)
+	item.letter_data.disconnect("deleted", self, "del_item")
+	item.disconnect("selected", self, "_on_LetterDataItem_selected")
+	grid.remove_child(item)
+	if is_instance_valid(item):
+		item.queue_free()
 
 
 func _on_LetterDataItem_selected(item):

@@ -5,6 +5,8 @@ extends PanelContainer
 signal selected(item)
 
 
+var letter_data: LetterData = LetterData.new() setget set_letter_data
+
 var bg_stylebox: StyleBox
 var bg_selected_stylebox: StyleBox
 var glyph_viewer: Label
@@ -18,6 +20,7 @@ var glyph_save_button: Button
 var delete_button: Button
 var glyph_cursor: Control
 var glyph_cursor_anim: AnimationPlayer
+var delete_confirmation: ConfirmationDialog
 
 enum NameEditMode {UNFOCUSED, VIEW, EDIT}
 
@@ -35,7 +38,7 @@ func _enter_tree():
 	print(bg_selected_stylebox, bg_selected_stylebox.content_margin_top, bg_selected_stylebox.content_margin_bottom)
 	add_stylebox_override("panel", bg_stylebox)
 
-	glyph_viewer = $VBox/Glyph	
+	glyph_viewer = $VBox/Glyph
 	name_tabber = $VBox/NameTabber
 	name_editor = $VBox/NameTabber/EditNameHBox/NameEditor
 	name_viewer = $VBox/NameTabber/NameView
@@ -46,6 +49,30 @@ func _enter_tree():
 	delete_button = $VBox/Glyph/EditButtonsVBox/DeleteButton
 	glyph_cursor = $VBox/Glyph/GlyphCursor
 	glyph_cursor_anim = $VBox/Glyph/GlyphCursor/GlyphAnimationPlayer
+	delete_confirmation = $DeleteConfirmationDialog
+
+	_read_new_resource()
+	
+	
+func _read_new_resource():
+	# warning-ignore:return_value_discarded
+	letter_data.connect("changed", self, "_read_resource")
+	# Defer the call because sub items may not have been created yet
+	call_deferred("_read_resource")
+
+
+func _read_resource():
+	glyph_viewer.text = letter_data.glyph
+	name_viewer.text = letter_data.resource_name
+	focused_name_viewer.text = letter_data.resource_name
+	name_editor.text = letter_data.resource_name
+
+
+func set_letter_data(new_letter: LetterData):
+	if new_letter == letter_data:
+		return
+	letter_data = new_letter
+	_read_new_resource()
 
 
 func _on_LetterDataItem_focus_entered():
@@ -87,8 +114,11 @@ func _on_LetterDataItem_gui_input(event):
 				if glyph_edit_mode and chr.strip_edges():
 					print("Typed: '%s'" % chr)
 					glyph_viewer.text = chr
-			elif scancode == KEY_ESCAPE or scancode == KEY_ENTER:
+			elif scancode == KEY_ESCAPE:
 				_finish_glyph_edit()
+			elif scancode == KEY_ENTER:
+				letter_data.glyph = glyph_viewer.text
+				_finish_glyph_edit_and_save()
 		else:
 			print("scancode:", scancode)
 			match scancode:
@@ -101,31 +131,33 @@ func _on_NameEditButton_pressed():
 	
 
 func _start_name_edit():
+	name_editor.text = letter_data.resource_name
 	name_tabber.current_tab = NameEditMode.EDIT
 	name_editor.grab_focus()
 
 
 func _finish_name_edit():
-	var new_name := name_editor.text
-	if not new_name:
-		new_name = name_viewer.text
-		name_editor.text = new_name
-	name_viewer.text = new_name
-	focused_name_viewer.text = new_name
 	name_tabber.current_tab = NameEditMode.VIEW
 	call_deferred("grab_focus")
+	
+	
+func _finish_name_edit_and_save():
+	if letter_data.set_valid_name(name_editor.text):
+		# warning-ignore:return_value_discarded
+		letter_data.save()
+	_finish_name_edit()
 
 
 func _on_NameSaveButton_pressed():
-	_finish_name_edit()
+	_finish_name_edit_and_save()
 
 
 func _on_NameEditor_focus_exited():
 	_finish_name_edit()
 
 
-func _on_NameEditor_text_entered(_new_text):
-	_finish_name_edit()
+func _on_NameEditor_text_entered(_new_text):	
+	_finish_name_edit_and_save()
 
 
 func _on_GlyphEditButton_pressed():
@@ -133,7 +165,7 @@ func _on_GlyphEditButton_pressed():
 	
 	
 func _on_GlyphSaveButton_pressed():
-	_finish_glyph_edit()
+	_finish_glyph_edit_and_save()
 
 
 func _start_glyph_edit():
@@ -156,3 +188,21 @@ func _finish_glyph_edit():
 	delete_button.show()
 	glyph_edit_button.show()
 	call_deferred("grab_focus")
+	
+	glyph_viewer.text = letter_data.glyph
+
+
+func _finish_glyph_edit_and_save():
+	letter_data.glyph = glyph_viewer.text
+	# warning-ignore:return_value_discarded
+	letter_data.save()
+	_finish_glyph_edit()
+
+
+func _on_DeleteButton_pressed():
+	delete_confirmation.dialog_text = "Delte letter '%s'?" % letter_data.resource_name
+	delete_confirmation.popup_centered()
+
+
+func _on_DeleteConfirmationDialog_confirmed():
+	letter_data.delete()
